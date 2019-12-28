@@ -1,3 +1,4 @@
+use sapoorva;
 create table organization(
    id INT NOT NULL AUTO_INCREMENT,
    org_name VARCHAR(40) NOT NULL,
@@ -8,8 +9,10 @@ create table organization(
 
 create table employee(
    id INT NOT NULL AUTO_INCREMENT,
-   emp_name VARCHAR(100) NOT NULL,
+   first_name VARCHAR(100) NOT NULL,
+   last_name VARCHAR(100) NOT NULL,
    salary VARCHAR(40) NOT NULL,
+   email VARCHAR(40) NOT NULL,
    dob DATE,
    designation VARCHAR(40) NOT NULL,
    org_id INT NOT NULL,
@@ -52,7 +55,7 @@ create table payment_schedule(
    id INT NOT NULL AUTO_INCREMENT,
    discription VARCHAR(100) NOT NULL,
    schedule_date DATE NOT NULL,
-   amount VARCHAR NOT NULL,
+   amount decimal(10,2) NOT NULL,
    payment_method VARCHAR(50),
    payment_date DATE,
    status CHAR(10) default 'PENDING',

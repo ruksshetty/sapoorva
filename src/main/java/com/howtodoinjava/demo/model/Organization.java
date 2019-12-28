@@ -1,50 +1,60 @@
 package com.howtodoinjava.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Organization {
 
 	public Organization() {
 
 	}
-	public Organization(Integer id, String firstName, String lastName, String email) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+
+	public Organization(String orgName, String location, String orgType) {
+		this.orgName = orgName;
+		this.location = location;
+		this.orgType = orgType;
 	}
-	
-	private Integer id;
-	private String firstName;
-	private String lastName;
-	private String email;
-	
-	public Integer getId() {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String orgName;
+	private String location;
+	private String orgType;
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getFirstName() {
-		return firstName;
+
+	public String getOrgName() {
+		return orgName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
-	public String getLastName() {
-		return lastName;
+
+	public String getLocation() {
+		return location;
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	public String getEmail() {
-		return email;
+
+	public String getOrgType() {
+		return orgType;
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + "]";
+
+	public void setOrgType(String orgType) {
+		this.orgType = orgType;
 	}
 }
