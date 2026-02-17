@@ -277,7 +277,7 @@
     {
       "definition": {
         "type": "piechart",
-        "title": "Email/Phone Flags Distribution",
+        "title": "hasEmailAddresses Distribution",
         "title_size": "16",
         "title_align": "left",
         "requests": [
@@ -305,7 +305,42 @@
                       "metric": "count",
                       "order": "desc"
                     }
-                  },
+                  }
+                ]
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "piechart",
+        "title": "hasPhoneNumbers Distribution",
+        "title_size": "16",
+        "title_align": "left",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "logs",
+                "search": {
+                  "query": "@msg:\"Smart Scan Results - COLP/ITPS\""
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "count"
+                },
+                "group_by": [
                   {
                     "facet": "@0.hasPhoneNumbers",
                     "limit": 2,
