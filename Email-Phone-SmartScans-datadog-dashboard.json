@@ -1,0 +1,281 @@
+{
+  "title": "Email-Phone-SmartScans",
+  "description": "Datadog dashboard converted from Sumo Logic dashboard 'Email-Phone-SmartScans'. Uses Smart Scan result logs with msg='Smart Scan Results - COLP/ITPS'.",
+  "widgets": [
+    {
+      "definition": {
+        "title": "Total Smart Scan Requests",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_value",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "query1",
+                "search": {
+                  "query": "service:development/int1-app-pmo @msg:\"Smart Scan Results - COLP/ITPS\" @0.nortonId:*"
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@0.nortonId"
+                },
+                "group_by": []
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1"
+              }
+            ]
+          }
+        ],
+        "autoscale": true,
+        "precision": 0,
+        "time": {
+          "live_span": "1w"
+        }
+      }
+    },
+    {
+      "definition": {
+        "title": "Unenrolled Smart Scan Request",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "query1",
+                "search": {
+                  "query": "service:development/int1-app-pmo @msg:\"Smart Scan Results - COLP/ITPS\" @0.nortonId:*"
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@0.nortonId"
+                },
+                "group_by": [
+                  {
+                    "facet": "@0.apiVersion",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasPII",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasEmailAddresses",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasPhoneNumbers",
+                    "limit": 10
+                  }
+                ]
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1",
+                "alias": "distinct_norton_ids"
+              }
+            ],
+            "sort": {
+              "count": 100,
+              "order_by": [
+                {
+                  "type": "formula",
+                  "index": 0,
+                  "order": "desc"
+                }
+              ]
+            }
+          }
+        ],
+        "has_search_bar": "auto"
+      }
+    },
+    {
+      "definition": {
+        "title": "Total Smart Scan Results (With Identities)",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_value",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "query1",
+                "search": {
+                  "query": "service:development/int1-app-pmo @msg:\"Smart Scan Results - COLP/ITPS\" @0.nortonId:* @0.totalScanResultsFound:[1 TO *]"
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@0.nortonId"
+                },
+                "group_by": []
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1"
+              }
+            ]
+          }
+        ],
+        "autoscale": true,
+        "precision": 0,
+        "time": {
+          "live_span": "3h"
+        }
+      }
+    },
+    {
+      "definition": {
+        "title": "Smart Scan Requests",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "query1",
+                "search": {
+                  "query": "service:development/int1-app-pmo @msg:\"Smart Scan Results - COLP/ITPS\" (@0.hasPII:true OR @0.hasEmailAddresses:true OR @0.hasPhoneNumbers:true)"
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@0.nortonId"
+                },
+                "group_by": [
+                  {
+                    "facet": "@0.hasPII",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasEmailAddresses",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasPhoneNumbers",
+                    "limit": 10
+                  }
+                ]
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1",
+                "alias": "request_count"
+              }
+            ],
+            "sort": {
+              "count": 100,
+              "order_by": [
+                {
+                  "type": "formula",
+                  "index": 0,
+                  "order": "desc"
+                }
+              ]
+            }
+          }
+        ],
+        "has_search_bar": "auto",
+        "time": {
+          "live_span": "1w"
+        }
+      }
+    },
+    {
+      "definition": {
+        "title": "Smart Scan Results (With Identities)",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "response_format": "scalar",
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "query1",
+                "search": {
+                  "query": "service:development/int1-app-pmo @msg:\"Smart Scan Results - COLP/ITPS\" @0.totalScanResultsFound:[1 TO *] ((@0.hasPII:true AND @0.standardScanResultsFound:[1 TO *]) OR (@0.hasEmailAddresses:true AND @0.emailScanResultsFound:[1 TO *]) OR (@0.hasPhoneNumbers:true AND @0.phoneScanResultsFound:[1 TO *]) OR (@0.hasPII:true AND @0.hasEmailAddresses:true AND @0.hasPhoneNumbers:true) OR (@0.hasEmailAddresses:true AND @0.hasPhoneNumbers:true))"
+                },
+                "indexes": [
+                  "*"
+                ],
+                "compute": {
+                  "aggregation": "cardinality",
+                  "metric": "@0.nortonId"
+                },
+                "group_by": [
+                  {
+                    "facet": "@0.hasPII",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasEmailAddresses",
+                    "limit": 10
+                  },
+                  {
+                    "facet": "@0.hasPhoneNumbers",
+                    "limit": 10
+                  }
+                ]
+              }
+            ],
+            "formulas": [
+              {
+                "formula": "query1",
+                "alias": "response_count"
+              }
+            ],
+            "sort": {
+              "count": 100,
+              "order_by": [
+                {
+                  "type": "formula",
+                  "index": 0,
+                  "order": "desc"
+                }
+              ]
+            }
+          }
+        ],
+        "has_search_bar": "auto",
+        "time": {
+          "live_span": "1w"
+        }
+      }
+    }
+  ],
+  "template_variables": [],
+  "layout_type": "ordered",
+  "notify_list": [],
+  "reflow_type": "auto",
+  "is_read_only": false
+}
